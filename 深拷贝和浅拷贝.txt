@@ -1,0 +1,54 @@
+##什么是深拷贝和浅拷贝
+简单点来说，就是假设B复制了A，当修改A时，看B是否会发生变化，如果B也跟着变了，说明这是浅拷贝。
+如果B没变，那就是深拷贝，自食其力。
+
+怎么去实现深拷贝？
+	#1.可以递归去复制所有层级属性
+	function deepClone(obj){
+    	let objClone = Array.isArray(obj)?[]:{};
+    	if(obj && typeof obj==="object"){
+      	  for(key in obj){
+            		if(obj.hasOwnProperty(key)){
+                	//判断ojb子元素是否为对象，如果是，递归复制
+               		 if(obj[key]&&typeof obj[key] ==="object"){
+                  	  objClone[key] = deepClone(obj[key]);
+              	  }else{
+                    	//如果不是，简单复制
+                   	 objClone[key] = obj[key];
+               	 }
+           	 }
+      	  }
+   	 }
+    	return objClone;
+	}    
+let a=[1,2,3,4],
+    b=deepClone(a);
+a[0]=2;
+console.log(a,b);
+	
+	#2.数组的slice（）方法
+	let a=[0,1,[2,3],4],
+        	b=a.slice();
+	a[0]=1;
+	a[2][0]=1;
+	console.log(a,b);
+
+	注意：拷贝的不彻底啊，b对象的一级属性确实不受影响了，但是二级属性还是没能拷贝成功，仍然脱离不了a的控制，说明slice根本不是真正的深拷贝。
+	第一层的属性确实深拷贝，拥有了独立的内存，但更深的属性却仍然公用了地址，所以才会造成上面的问题。
+
+	同理，concat方法与slice也存在这样的情况，他们都不是真正的深拷贝，这里需要注意。
+
+	#3.JSON.stringify与JSON.parse除了实现深拷贝
+
+	function deepClone(obj){
+    	let _obj = JSON.stringify(obj),
+        	objClone = JSON.parse(_obj);
+    		return objClone
+	}    
+	let a=[0,1,[2,3],4],
+    	b=deepClone(a);
+	a[0]=1;
+	a[2][0]=1;
+	console.log(a,b);
+
+引用网址：https://www.cnblogs.com/echolun/p/7889848.html

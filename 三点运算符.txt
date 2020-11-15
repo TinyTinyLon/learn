@@ -1,0 +1,44 @@
+##...运算符的作用
+1.展开运算符
+let a = [1,2,3];
+let b = [0, ...a, 4]; // [0,1,2,3,4]
+ 
+let obj = { a: 1, b: 2 };
+let obj2 = { ...obj, c: 3 }; // { a:1, b:2, c:3 }
+let obj3 = { ...obj, a: 3 }; // { a:3, b:2 }
+
+2.为剩余操作符
+let a = [1,2,3];
+let [b, ...c] = a;
+b; // 1
+c; // [2,3]
+ 
+// 也可以
+let a = [1,2,3];
+let [b, ...[c,d,e]] = a;
+b; // 1
+c; // 2
+d; // 3
+e; // undefined
+ 
+// 也可以
+function test(a, ...rest){
+  console.log(a); // 1
+  console.log(rest); // [2,3]
+}
+ 
+test(1,2,3)
+
+	在function中的应用
+	使用方法一：在函数的传参数过程。作用将剩余的参数放入一个数组中。合并
+	rest参数形式为（...变量名），其值为一个数组，用于获取函数多余参数。
+	
+function f(a,...arr){
+    console.log(arr);
+}
+f(1,2,3,4,4); //[2,3,4,5]复制代码
+注意：rest参数只能放在最后一个，否则报错：
+错误：
+function f(a, ...b, c){...}; // 报错
+
+网址：https://blog.csdn.net/weixin_34162629/article/details/91446422?utm_medium=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase&depth_1-utm_source=distribute.pc_relevant_t0.none-task-blog-BlogCommendFromMachineLearnPai2-1.nonecase
